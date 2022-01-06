@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 
-type RowColor = "red" | "yellow" | "green" | "blue";
-const rowColors: ReadonlyArray<RowColor> = ["red", "yellow", "green", "blue"];
+type Color = "white" | "red" | "yellow" | "green" | "blue";
+const colors: ReadonlyArray<Color> = ["red", "yellow", "green", "blue"];
 
 function getColor(color: string): string {
   switch (color) {
@@ -21,26 +21,143 @@ function getColor(color: string): string {
 
   return color;
 }
-const ColorMap: ReadonlyMap<RowColor, string> = new Map([
+const ColorMap: ReadonlyMap<Color, string> = new Map([
   ["red", "red"],
   ["yellow", "yellow"],
   ["green", "green"],
   ["blue", "blue"],
 ]);
 
-type RowDefinition = number[];
-type BoardDefinition = { [color: string]: RowDefinition };
+interface Square {
+  readonly color: Color;
+  /** 0 is used for LOCKS */
+  readonly number: number;
+}
 
-const DefaultBoard: BoardDefinition = {
-  red: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0],
-  yellow: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0],
-  green: [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0],
-  blue: [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0],
-};
+type RowDefinition = ReadonlyArray<Square>;
+type BoardDefinition = ReadonlyArray<RowDefinition>;
+
+const DefaultBoard: BoardDefinition = [
+  [
+    { number: 2, color: "red" },
+    { number: 3, color: "red" },
+    { number: 4, color: "red" },
+    { number: 5, color: "red" },
+    { number: 6, color: "red" },
+    { number: 7, color: "red" },
+    { number: 8, color: "red" },
+    { number: 9, color: "red" },
+    { number: 10, color: "red" },
+    { number: 11, color: "red" },
+    { number: 12, color: "red" },
+    { number: 0, color: "red" },
+  ],
+  [
+    { number: 2, color: "yellow" },
+    { number: 3, color: "yellow" },
+    { number: 4, color: "yellow" },
+    { number: 5, color: "yellow" },
+    { number: 6, color: "yellow" },
+    { number: 7, color: "yellow" },
+    { number: 8, color: "yellow" },
+    { number: 9, color: "yellow" },
+    { number: 10, color: "yellow" },
+    { number: 11, color: "yellow" },
+    { number: 12, color: "yellow" },
+    { number: 0, color: "yellow" },
+  ],
+  [
+    { number: 12, color: "green" },
+    { number: 11, color: "green" },
+    { number: 10, color: "green" },
+    { number: 9, color: "green" },
+    { number: 8, color: "green" },
+    { number: 7, color: "green" },
+    { number: 6, color: "green" },
+    { number: 5, color: "green" },
+    { number: 4, color: "green" },
+    { number: 3, color: "green" },
+    { number: 2, color: "green" },
+    { number: 0, color: "green" },
+  ],
+  [
+    { number: 12, color: "blue" },
+    { number: 11, color: "blue" },
+    { number: 10, color: "blue" },
+    { number: 9, color: "blue" },
+    { number: 8, color: "blue" },
+    { number: 7, color: "blue" },
+    { number: 6, color: "blue" },
+    { number: 5, color: "blue" },
+    { number: 4, color: "blue" },
+    { number: 3, color: "blue" },
+    { number: 2, color: "blue" },
+    { number: 0, color: "blue" },
+  ],
+];
+
+const MixxBoard: BoardDefinition = [
+  [
+    { number: 2, color: "yellow" },
+    { number: 3, color: "yellow" },
+    { number: 4, color: "yellow" },
+    { number: 5, color: "blue" },
+    { number: 6, color: "blue" },
+    { number: 7, color: "blue" },
+    { number: 8, color: "green" },
+    { number: 9, color: "green" },
+    { number: 10, color: "green" },
+    { number: 11, color: "red" },
+    { number: 12, color: "red" },
+    { number: 0, color: "red" },
+  ],
+  [
+    { number: 2, color: "red" },
+    { number: 3, color: "red" },
+    { number: 4, color: "green" },
+    { number: 5, color: "green" },
+    { number: 6, color: "green" },
+    { number: 7, color: "green" },
+    { number: 8, color: "blue" },
+    { number: 9, color: "blue" },
+    { number: 10, color: "yellow" },
+    { number: 11, color: "yellow" },
+    { number: 12, color: "yellow" },
+    { number: 0, color: "yellow" },
+  ],
+  [
+    { number: 12, color: "blue" },
+    { number: 11, color: "blue" },
+    { number: 10, color: "blue" },
+    { number: 9, color: "yellow" },
+    { number: 8, color: "yellow" },
+    { number: 7, color: "yellow" },
+    { number: 6, color: "red" },
+    { number: 5, color: "red" },
+    { number: 4, color: "red" },
+    { number: 3, color: "green" },
+    { number: 2, color: "green" },
+    { number: 0, color: "green" },
+  ],
+  [
+    { number: 12, color: "green" },
+    { number: 11, color: "green" },
+    { number: 10, color: "red" },
+    { number: 9, color: "red" },
+    { number: 8, color: "red" },
+    { number: 7, color: "red" },
+    { number: 6, color: "yellow" },
+    { number: 5, color: "yellow" },
+    { number: 4, color: "blue" },
+    { number: 3, color: "blue" },
+    { number: 2, color: "blue" },
+    { number: 0, color: "blue" },
+  ],
+];
 
 // Row key should be 2-12 and "LOCKED" is 0
 type RowState = { [key: number]: boolean };
-type BoardState = { [color: string]: RowState };
+type BoardState = RowState[];
 
 function textColor(backgroundColor: string) {
   // TODO this is not very good.
@@ -51,12 +168,14 @@ function textColor(backgroundColor: string) {
 
 // We are treating 0 as locked!
 interface ClickData {
+  rowIndex: number;
   number: number;
   color: string;
   checked: boolean;
 }
 
 function QwixxRowButton({
+  rowIndex,
   color,
   number,
   checked,
@@ -64,6 +183,7 @@ function QwixxRowButton({
   highlighted,
   onClick,
 }: {
+  rowIndex: number;
   color: string;
   number: number;
   checked: boolean;
@@ -76,28 +196,30 @@ function QwixxRowButton({
   if (locked) background = "rgba(255,255,255,.2)";
   if (checked) background = "rgba(0,0,0,.3)";
   return (
-    <button
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background,
-        color: getColor(color),
-        width: 35,
-        height: 35,
-        margin: 2,
-        fontFamily: "sans-serif",
-        fontSize: number ? 24 : 20,
-        fontWeight: 700,
-        border: "none",
-        borderRadius: 4,
-        textAlign: "center",
-      }}
-      onClick={() => {
-        onClick({ color, number, checked: !checked });
-      }}>
-      {number || "🔒"}
-    </button>
+    <div style={{ background: getColor(color), padding: 5 }}>
+      <button
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background,
+          color: checked ? "white" : getColor(color),
+          width: 35,
+          height: 35,
+          margin: 2,
+          fontFamily: "sans-serif",
+          fontSize: number ? 24 : 20,
+          fontWeight: 700,
+          border: "none",
+          borderRadius: 4,
+          textAlign: "center",
+        }}
+        onClick={() => {
+          onClick({ rowIndex, color, number, checked: !checked });
+        }}>
+        {number || "🔒"}
+      </button>
+    </div>
   );
 }
 
@@ -108,11 +230,11 @@ function isLaterSelected(
 ) {
   // we want to check if any LATER number is selected.
   let isLater = false;
-  for (let n of rowDef) {
-    if (isLater && rowState[n]) {
+  for (let square of rowDef) {
+    if (isLater && rowState[square.number]) {
       return true;
     }
-    if (n === number) {
+    if (square.number === number) {
       isLater = true;
     }
   }
@@ -120,18 +242,17 @@ function isLaterSelected(
   return false;
 }
 
-type RowHightlightState = { [number: number]: boolean };
 function QwixxRow({
-  color,
+  rowIndex,
   rowDef,
   rowState,
   rowHighlights,
   onClick,
 }: {
-  color: string;
+  rowIndex: number;
   rowDef: RowDefinition;
   rowState: RowState;
-  rowHighlights?: RowHightlightState;
+  rowHighlights?: Square[];
   onClick: (clickData: ClickData) => void;
 }) {
   return (
@@ -139,54 +260,37 @@ function QwixxRow({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        background: getColor(color),
-        padding: 5,
         marginBottom: 5,
       }}>
-      {rowDef.map((number) => (
-        <QwixxRowButton
-          color={color}
-          number={number}
-          checked={rowState[number]}
-          locked={isLaterSelected(rowDef, rowState, number)}
-          highlighted={rowHighlights ? rowHighlights[number] : false}
-          onClick={onClick}
-        />
-      ))}
+      {rowDef.map((square, squareIndex) => {
+        let highlighted = false;
+        rowHighlights?.forEach((highlight) => {
+          if (
+            (highlight.color == "white" || highlight.color === square.color) &&
+            highlight.number === square.number
+          ) {
+            highlighted = true;
+          }
+        });
+        return (
+          <QwixxRowButton
+            key={squareIndex}
+            rowIndex={rowIndex}
+            color={square.color}
+            number={square.number}
+            checked={rowState[square.number]}
+            locked={isLaterSelected(rowDef, rowState, square.number)}
+            highlighted={highlighted}
+            onClick={onClick}
+          />
+        );
+      })}
     </div>
   );
 }
 
 function createEmptyBoard(): BoardState {
-  return {
-    red: {},
-    yellow: {},
-    green: {},
-    blue: {},
-  };
-}
-
-function validPlaySpots(board: BoardState, dice: number[]) {
-  // first two dice are the white ones.
-  const whiteNumber = dice[0] + dice[1];
-
-  // for each row see if there are are playable spots.
-  const plays: BoardState = {};
-  for (const color in board) {
-    // can play either the white number or either white + the dice of that color
-  }
-}
-
-function getHighlightState(dice: number[], color: string): RowHightlightState {
-  const state: RowHightlightState = {};
-  const roll = getDiceRoll(dice);
-
-  state[roll.white] = true;
-  for (const i of (roll as unknown as { [color: string]: number[] })[color]) {
-    state[i] = true;
-  }
-
-  return state;
+  return [{}, {}, {}, {}];
 }
 
 function QwixxBoard({
@@ -195,22 +299,24 @@ function QwixxBoard({
   boardDef,
   boardState,
   onClick,
+  lockedColors,
 }: {
   dice?: number[];
   turn?: boolean;
   boardDef: BoardDefinition;
   boardState: BoardState;
   onClick: (clickData: ClickData) => void;
+  lockedColors: Set<Color>;
 }) {
   return (
     <div>
-      {rowColors.map((color, index) => (
+      {boardDef.map((rowDef, rowIndex) => (
         <QwixxRow
-          color={color}
-          key={index}
-          rowDef={boardDef[color]}
-          rowState={boardState[color]}
-          rowHighlights={dice ? getHighlightState(dice, color) : undefined}
+          key={rowIndex}
+          rowIndex={rowIndex}
+          rowDef={rowDef}
+          rowState={boardState[rowIndex]}
+          rowHighlights={dice && getDiceRoll(dice, lockedColors)}
           onClick={onClick}
         />
       ))}
@@ -246,74 +352,60 @@ function rollDice() {
   return dice;
 }
 
-const diceColors: ReadonlyArray<string> = ["white", "white", ...rowColors];
+const diceColors: ReadonlyArray<Color> = ["white", "white", ...colors];
 
-interface DiceRoll {
-  white: number;
-  red: number[];
-  yellow: number[];
-  green: number[];
-  blue: number[];
+function getDiceRoll(dice: number[], lockedColors: Set<Color>): Square[] {
+  if (dice.length == 2) {
+    return [{ color: "white", number: dice[0] + dice[1] }];
+  }
+
+  const rolls: Square[] = [
+    { color: "white", number: dice[0] + dice[1] },
+
+    { color: "red", number: dice[0] + dice[2] },
+    { color: "red", number: dice[1] + dice[2] },
+
+    { color: "yellow", number: dice[0] + dice[3] },
+    { color: "yellow", number: dice[1] + dice[3] },
+
+    { color: "green", number: dice[0] + dice[4] },
+    { color: "green", number: dice[1] + dice[4] },
+
+    { color: "blue", number: dice[0] + dice[5] },
+    { color: "blue", number: dice[1] + dice[5] },
+  ];
+
+  return rolls.filter((r) => !lockedColors.has(r.color));
 }
 
-function getDiceRoll(dice: number[]): DiceRoll {
-  return {
-    white: dice[0] + dice[1],
-    red: [dice[0] + dice[2], dice[1] + dice[2]],
-    yellow: [dice[0] + dice[3], dice[1] + dice[3]],
-    green: [dice[0] + dice[4], dice[1] + dice[4]],
-    blue: [dice[0] + dice[5], dice[1] + dice[5]],
-  };
-}
-
-function QwixxDiceValue({
-  color,
-  numbers,
+function QwixxDice({
+  dice,
+  lockedColors,
 }: {
-  color: string;
-  numbers: number[];
+  dice: number[];
+  lockedColors: Set<Color>;
 }) {
   return (
-    <span
-      style={{
-        background: getColor(color),
-        color: color === "white" ? "black" : "white",
-        fontWeight: 700,
-        fontSize: 18,
-        padding: 5,
-        margin: 2,
-      }}>
-      {numbers[0]}
-      {numbers[0] !== numbers[1] && numbers[1] ? `, ${numbers[1]}` : null}
-    </span>
-  );
-}
-
-function QwixxDiceValues({ dice }: { dice: number[] }) {
-  const roll = getDiceRoll(dice);
-  return (
-    <div>
-      <QwixxDiceValue color='white' numbers={[roll.white]} />
-      {rowColors.map((color) => (
-        <QwixxDiceValue color={color} numbers={(roll as any)[color]} />
-      ))}
-    </div>
-  );
-}
-
-function QwixxDice({ dice }: { dice: number[] }) {
-  return (
     <div style={{ display: "flex", margin: 5 }}>
-      {dice.map((die, index) => (
-        <QwixxDie color={diceColors[index]} number={die} />
-      ))}
+      {dice.map((die, index) =>
+        false && lockedColors.has(diceColors[index]) ? null : (
+          <QwixxDie key={index} color={diceColors[index]} number={die} />
+        )
+      )}
     </div>
   );
 }
 
 function QwixxDiceAreaDummy() {
   const [dice, setDice] = React.useState<number[] | undefined>();
-  return <QwixxDiceArea dice={dice} setDice={setDice} row={true} />;
+  return (
+    <QwixxDiceArea
+      dice={dice}
+      setDice={setDice}
+      row={true}
+      lockedColors={new Set()}
+    />
+  );
 }
 
 function ActionButton({
@@ -345,10 +437,12 @@ function QwixxDiceArea({
   dice,
   setDice,
   row,
+  lockedColors,
 }: {
   dice?: number[];
   setDice: (dice: number[]) => void;
   row?: boolean;
+  lockedColors: Set<Color>;
 }) {
   return (
     <div
@@ -363,7 +457,7 @@ function QwixxDiceArea({
           setDice(rollDice());
         }}
       />
-      {dice ? <QwixxDice dice={dice} /> : null}
+      {dice ? <QwixxDice dice={dice} lockedColors={lockedColors} /> : null}
       {/* {dice ? <QwixxDiceValues dice={dice} /> : null} */}
     </div>
   );
@@ -379,43 +473,11 @@ function copyBoardState(boardState: BoardState): BoardState {
 
 function updateBoardState(
   boardState: BoardState,
-  { color, number, checked }: ClickData
+  { rowIndex, color, number, checked }: ClickData
 ): BoardState {
   boardState = copyBoardState(boardState);
-  boardState[color][number] = checked;
+  boardState[rowIndex][number] = checked;
   return boardState;
-}
-
-function QwixxPlayer({ turn }: { turn?: boolean }) {
-  const [boardDef, setBoardDef] = React.useState(DefaultBoard);
-  const [dice, setDice] = React.useState<number[] | undefined>();
-
-  const [boardState, setBoardState] = React.useState<BoardState>(
-    createEmptyBoard()
-  );
-
-  return (
-    <div
-      style={{
-        margin: 10,
-        border: "1px solid grey",
-        padding: 10,
-        display: "flex",
-        alignItems: "center",
-      }}>
-      <QwixxBoard
-        turn={turn}
-        dice={dice}
-        boardState={boardState}
-        boardDef={boardDef}
-        onClick={(clickData) => {
-          setBoardState(updateBoardState(boardState, clickData));
-        }}
-      />
-
-      <QwixxDiceArea dice={dice} setDice={setDice} />
-    </div>
-  );
 }
 
 function trimDice(isActive: boolean, dice?: number[]) {
@@ -428,10 +490,10 @@ function trimDice(isActive: boolean, dice?: number[]) {
 function scoreRow(rowState: RowState, rowDef: RowDefinition): number {
   let score = 0;
   let count = 0;
-  for (let n of rowDef) {
+  for (let square of rowDef) {
     // if n is 0, this is the LOCK, so it only counts if at least 6! others are already pressed
-    if (n === 0 && count < 6) continue;
-    if (rowState[n]) score += ++count;
+    if (square.number === 0 && count < 6) continue;
+    if (rowState[square.number]) score += ++count;
   }
 
   return score;
@@ -443,8 +505,8 @@ function scoreQwixxBoard(
 ): number {
   let score = 0;
 
-  rowColors.forEach((color) => {
-    score += scoreRow(boardState[color], boardDef[color]);
+  boardState.forEach((rowState, rowIndex) => {
+    score += scoreRow(rowState, boardDef[rowIndex]);
   });
 
   return score;
@@ -452,13 +514,13 @@ function scoreQwixxBoard(
 
 function QwixxScoreSquare({
   color,
-  boardState,
-  boardDef,
+  rowState,
+  rowDef,
   score,
 }: {
   color: string;
-  boardState?: BoardState;
-  boardDef: BoardDefinition;
+  rowState?: RowState;
+  rowDef?: RowDefinition;
   score?: number;
 }) {
   const background = color == "white" ? "black" : getColor(color);
@@ -483,7 +545,7 @@ function QwixxScoreSquare({
           fontSize: 18,
           fontWeight: 700,
         }}>
-        {boardState ? scoreRow(boardState[color], boardDef[color]) : score ?? 0}
+        {rowState && rowDef ? scoreRow(rowState, rowDef) : score ?? 0}
       </div>
     </div>
   );
@@ -500,29 +562,47 @@ function QwixxScore({
 }) {
   return (
     <div style={{ display: "flex" }}>
-      {rowColors.map((color) => (
-        <>
+      {boardState.map((rowState, rowIndex) => (
+        <React.Fragment key={rowIndex}>
           <QwixxScoreSquare
-            color={color}
-            boardState={boardState}
-            boardDef={boardDef}
+            color={colors[rowIndex]}
+            rowState={rowState}
+            rowDef={boardDef[rowIndex]}
           />
-          <span style={{ fontSize: 18, fontWeight: 800 }}>
-            {color !== "blue" ? "+" : "-"}
+          <span key={rowIndex + "+"} style={{ fontSize: 18, fontWeight: 800 }}>
+            {rowIndex < boardState.length - 1 ? "+" : "-"}
           </span>
-        </>
+        </React.Fragment>
       ))}
 
       {/* todo: add penalties */}
-      <QwixxScoreSquare color='white' score={penalty} boardDef={boardDef} />
+      <QwixxScoreSquare color='white' score={penalty} />
       <span style={{ fontSize: 18, fontWeight: 800 }}>=</span>
       <QwixxScoreSquare
         color='white'
-        boardDef={boardDef}
         score={scoreQwixxBoard(boardState, boardDef) - penalty}
       />
     </div>
   );
+}
+
+function getLockedRows(players: BoardState[]) {
+  const lockedRows = new Set<number>();
+  players.forEach((player) => {
+    player.forEach((rowState, rowIndex) => {
+      if (rowState[0]) lockedRows.add(rowIndex);
+    });
+  });
+  return lockedRows;
+}
+
+function getLockedColors(lockedRows: Set<number>, boardDef: BoardDefinition) {
+  const lockedColors = new Set<Color>();
+  lockedRows.forEach((rowIndex) => {
+    const row = boardDef[rowIndex];
+    lockedColors.add(row[row.length - 1].color);
+  });
+  return lockedColors;
 }
 
 function QwixxGame() {
@@ -532,6 +612,9 @@ function QwixxGame() {
   const [players, setPlayers] = React.useState<BoardState[]>([
     createEmptyBoard(),
   ]);
+
+  const lockedRows = getLockedRows(players);
+  const lockedColors = getLockedColors(lockedRows, boardDef);
 
   // need to track who has penalities and has played this turn!
 
@@ -563,14 +646,23 @@ function QwixxGame() {
             </div> */}
             <div>
               <QwixxBoard
+                lockedColors={lockedColors}
                 turn={isActive}
                 dice={trimDice(isActive, dice)}
-                boardDef={DefaultBoard}
+                boardDef={boardDef}
                 boardState={boardState}
                 onClick={(clickData) => {
                   const newBoardState = updateBoardState(boardState, clickData);
                   const newPlayers = players.map((p) => copyBoardState(p));
                   newPlayers[playerIndex] = newBoardState;
+
+                  // when locking or unlocking apply to all rows!
+                  if (clickData.number === 0) {
+                    newPlayers.forEach((player) => {
+                      player[clickData.rowIndex][0] = clickData.checked;
+                    });
+                  }
+
                   setPlayers(newPlayers);
                 }}
               />
@@ -607,14 +699,41 @@ function QwixxGame() {
       })}
 
       <div style={{ display: "flex" }}>
-        <ActionButton
-          text='Add player'
-          onClick={() => {
-            setPlayers([...players, createEmptyBoard()]);
-            setTurn(-1);
-          }}
-        />
-        {players.length > 1 ? (
+        {turn < 0 ? (
+          <ActionButton
+            text='Mixx board'
+            onClick={() => {
+              setBoardDef(MixxBoard);
+            }}
+          />
+        ) : null}
+        {turn < 0 ? (
+          <ActionButton
+            text='Default board'
+            onClick={() => {
+              setBoardDef(DefaultBoard);
+            }}
+          />
+        ) : null}
+        {turn < 0 ? (
+          <ActionButton
+            text='Add player'
+            onClick={() => {
+              setPlayers([...players, createEmptyBoard()]);
+              setTurn(-1);
+            }}
+          />
+        ) : null}
+        {turn < 0 ? (
+          <ActionButton
+            text='Start'
+            onClick={() => {
+              setDice(undefined);
+              setTurn(0);
+            }}
+          />
+        ) : null}
+        {turn >= 0 ? (
           <ActionButton
             text='Next player'
             onClick={() => {
@@ -623,7 +742,14 @@ function QwixxGame() {
             }}
           />
         ) : null}
-        <QwixxDiceArea row dice={dice} setDice={setDice} />
+        {turn >= 0 ? (
+          <QwixxDiceArea
+            row
+            dice={dice}
+            setDice={setDice}
+            lockedColors={lockedColors}
+          />
+        ) : null}
       </div>
     </div>
   );
