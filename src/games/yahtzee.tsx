@@ -90,9 +90,9 @@ interface YahzteeScore {
   readonly threekind?: number;
   readonly fourkind?: number;
 
-  readonly fullhouse?: boolean;
-  readonly smstraight?: boolean;
-  readonly lgstraight?: boolean;
+  readonly fullhouse?: number;
+  readonly smstraight?: number;
+  readonly lgstraight?: number;
   readonly yahtzee: number;
   readonly chance?: number;
 }
@@ -240,8 +240,16 @@ function LowerSection({
 
         <YahtzeeRow name='Full House' />
 
-        <YahtzeeRow name='Sm Straight' score={score.smstraight && } />
-        <YahtzeeRow name='Lg straight' />
+        <YahtzeeRow
+          name='Sm Straight'
+          score={score.smstraight}
+          possibleScore={scoreStraight(dice, 4, 30)}
+        />
+        <YahtzeeRow
+          name='Lg straight'
+          score={score.lgstraight}
+          possibleScore={scoreStraight(dice, 5, 40)}
+        />
 
         <YahtzeeRow name='Yahtzee' />
         <YahtzeeRow name='Chance' />
